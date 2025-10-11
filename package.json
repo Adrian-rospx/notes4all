@@ -1,0 +1,20 @@
+{
+  "name": "notes4all",
+  "version": "1.0.0",
+  "description": "Note taker project in Node",
+  "keywords": [
+    "notes"
+  ],
+  "license": "ISC",
+  "author": "Adrian-rospx",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "express": "^5.1.0"
+  }
+}
