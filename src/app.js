@@ -9,13 +9,21 @@ application.use(express.json());
 
 // get requests
 application.get("/", (req, res) => {
-    const string = DbOps.listNotes();
-    res.status(200).send(string);
+    try {
+        const string = DbOps.listNotes();
+        res.status(200).send(string);
+    } catch (error) {
+        return res.status(404).send("Note not found");
+    }
 });
 application.get("/:id", (req, res) => {
     const id = req.params.id;
-    const string = DbOps.findNote(id);
-    res.status(200).send(string);
+    try {
+        const string = DbOps.findNote(id);
+        res.status(200).send(string);
+    } catch (error) {
+        return res.status(404).send("Note not found.");
+    }
 });
 
 // post request
@@ -47,7 +55,7 @@ application.patch("/:id", (req, res) => {
 application.delete("/:id", (req, res) => {
     const id = req.params.id;
     const result = DbOps.removeNote(id);
-    
+
     if (result.changes === 0)
         return res.status(404).send("Note not found");
 

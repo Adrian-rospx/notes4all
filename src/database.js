@@ -34,11 +34,6 @@ const deleteNote = database.prepare(`
     DELETE FROM notes
     WHERE id = ? 
 `);
-// misc helper statements
-const findLastNoteId = database.prepare(`
-    SELECT MAX(id) FROM notes
-    WHERE title = ? 
-`);
 
 // constructor destructor functions
 function initDb() {
@@ -56,6 +51,9 @@ function createNote(title, content) {
 function listNotes() {
     const notes = selectNotes.all();
     
+    if (typeof notes === "undefined")
+        throw new Error("404");
+
     const string = notes.map((note) =>
         Object.entries(note)
             .map(([key, value]) => `${key}: ${value}`)
@@ -66,6 +64,10 @@ function listNotes() {
 // searches for a note by id
 function findNote(id) {
     const note = selectNoteById.get(id);
+
+    if (typeof note === "undefined")
+        throw new Error("404");
+        
     const string = Object.entries(note)
         .map(([key, value]) => `${key}: ${value}`)
         .join('\n');
@@ -77,11 +79,6 @@ function updateNoteContent(id, newContent) {
 function removeNote(id) {
     return deleteNote.run(id);
 }
-// find max id of title
-function LastNoteID(title) {
-    const id = findLastNoteId.get(title)["MAX(id)"];
-    return id;
-}
 
 // function exports
 export {
@@ -90,5 +87,4 @@ export {
     listNotes, findNote,
     updateNoteContent,
     removeNote,
-    LastNoteID
 };
