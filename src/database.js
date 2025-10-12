@@ -1,6 +1,6 @@
 import Database from "better-sqlite3";
 
-const database = new Database('notes.db')
+const database = new Database("notes.db")
 
 // SQL statements for basic operations
 const createNotesDB = database.prepare(`
@@ -39,11 +39,16 @@ function releaseDB() {
 function createNote(title, content) {
     insertNote.run(title, content);
 }
+// Turns all notes into a string representation
 function listNotes() {
     const notes = selectNotes.all();
-    for (let note of notes) {
-        console.log(note);
-    }
+    
+    const string = notes.map((note) =>
+        Object.entries(note)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join("\n")
+    ).join("\n\n");
+    return string;
 }
 function updateContent(id, newContent) {
     updateNoteContent.run(newContent, id);
