@@ -36,7 +36,7 @@ const deleteNote = database.prepare(`
 `);
 
 // constructor destructor functions
-function initDb() {
+function initDB() {
     createNotesDB.run();
 }
 function releaseDB() {
@@ -47,31 +47,12 @@ function releaseDB() {
 function createNote(title, content) {
     return insertNote.run(title, content);
 }
-// Returns a string representation of all notes
 function listNotes() {
-    const notes = selectNotes.all();
-    
-    if (typeof notes === "undefined")
-        throw new Error("404");
-
-    const string = notes.map((note) =>
-        Object.entries(note)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join("\n")
-    ).join("\n\n");
-    return string;
+    return selectNotes.all();
 }
 // searches for a note by id
 function findNote(id) {
-    const note = selectNoteById.get(id);
-
-    if (typeof note === "undefined")
-        throw new Error("404");
-        
-    const string = Object.entries(note)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join('\n');
-    return string;
+    return selectNoteById.get(id);
 }
 function updateNoteContent(id, newContent) {
     return updateNote.run(newContent, id);
@@ -82,7 +63,7 @@ function removeNote(id) {
 
 // function exports
 export {
-    initDb, releaseDB,
+    initDB, releaseDB,
     createNote,
     listNotes, findNote,
     updateNoteContent,

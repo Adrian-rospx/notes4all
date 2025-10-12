@@ -2,28 +2,37 @@ import express from "express";
 import * as DbOps from "./database.js";
 
 const application = express();
-const PORT = 3000;
 
-DbOps.initDb();
+DbOps.initDB();
 application.use(express.json());
 
 // get requests
 application.get("/", (req, res) => {
-    try {
-        const string = DbOps.listNotes();
-        res.status(200).send(string);
-    } catch (error) {
+    const notes = DbOps.listNotes();
+    
+    if (typeof notes === "undefined")
         return res.status(404).send("Note not found");
-    }
+
+    const string = notes.map((note) =>
+        Object.entries(note)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join("\n")
+    ).join("\n\n");
+
+    res.status(200).send(string);
 });
 application.get("/:id", (req, res) => {
     const id = req.params.id;
-    try {
-        const string = DbOps.findNote(id);
-        res.status(200).send(string);
-    } catch (error) {
+    const note = DbOps.findNote(id);
+
+    if (typeof note === "undefined")
         return res.status(404).send("Note not found.");
-    }
+        
+    const string = Object.entries(note)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
+
+    res.status(200).send(string);
 });
 
 // post request

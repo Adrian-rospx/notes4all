@@ -1,3 +1,8 @@
 import application from './src/app.js';
+import { configDotenv } from 'dotenv';
 
-application.listen(3000);
+configDotenv();
+
+const PORT = process.env.PORT || 3000;
+
+application.listen(PORT);
