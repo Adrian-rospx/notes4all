@@ -50,7 +50,7 @@ function releaseDB() {
 
 // CRUD operation wrapper functions
 function createNote(title, content) {
-    insertNote.run(title, content);
+    return insertNote.run(title, content);
 }
 // Returns a string representation of all notes
 function listNotes() {
@@ -72,10 +72,10 @@ function findNote(id) {
     return string;
 }
 function updateNoteContent(id, newContent) {
-    updateNote.run(newContent, id);
+    return updateNote.run(newContent, id);
 }
 function removeNote(id) {
-    deleteNote.run(id);
+    return deleteNote.run(id);
 }
 // find max id of title
 function LastNoteID(title) {

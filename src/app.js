@@ -20,18 +20,39 @@ application.get("/:id", (req, res) => {
 
 // post request
 application.post("/", (req, res) => {
-    console.log(req.body);
     const { title, content } = req.body;
 
     if (!title || !content)
-        return res.status(400).send("Title and content are required!");
+        return res.status(400).send("Bad request. Title and content are required!");
 
     const result = DbOps.createNote(title, content);
-    const lastID = DbOps.LastNoteID(title);
-    res.status(201).json({id: lastID, title, content});
+    res.status(201).json({id: result.lastInsertRowid, title, content});
 });
 
-// delete request ...
+application.patch("/:id", (req, res) => {
+    const id = req.params.id;
+    const { content } = req.body;
+
+    if (!content)
+        return res.status(400).send("Bad request. Content is required!");
+
+    const result = DbOps.updateNoteContent(id, content);
+    if (result.changes === 0)
+        return res.status(404).send("Note not found.")
+
+    res.status(200).send("Resource updated successfully");
+});
+
+// delete request 
+application.delete("/:id", (req, res) => {
+    const id = req.params.id;
+    const result = DbOps.removeNote(id);
+    
+    if (result.changes === 0)
+        return res.status(404).send("Note not found");
+
+    res.status(200).send("Resource deleted");
+});
 
 export default application;
 
