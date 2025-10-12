@@ -27,10 +27,13 @@ application.post("/", (req, res) => {
         return res.status(400).send("Title and content are required!");
 
     const result = DbOps.createNote(title, content);
-    res.status(201).json({title, content});
+    const lastID = DbOps.LastNoteID(title);
+    res.status(201).json({id: lastID, title, content});
 });
 
-application.listen(PORT);
+// delete request ...
+
+export default application;
 
 // exit process
 process.on("exit", () => {

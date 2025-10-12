@@ -1,1 +1,3 @@
-import './src/app.js';
+import application from './src/app.js';
+
+application.listen(3000);

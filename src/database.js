@@ -24,7 +24,7 @@ const selectNoteById = database.prepare(`
     WHERE id = ?
 `);
 // update
-const updateNoteContent = database.prepare(`
+const updateNote = database.prepare(`
     UPDATE notes
     SET content = ?
     WHERE id = ?
@@ -33,6 +33,11 @@ const updateNoteContent = database.prepare(`
 const deleteNote = database.prepare(`
     DELETE FROM notes
     WHERE id = ? 
+`);
+// misc helper statements
+const findLastNoteId = database.prepare(`
+    SELECT MAX(id) FROM notes
+    WHERE title = ? 
 `);
 
 // constructor destructor functions
@@ -66,11 +71,16 @@ function findNote(id) {
         .join('\n');
     return string;
 }
-function updateContent(id, newContent) {
-    updateNoteContent.run(newContent, id);
+function updateNoteContent(id, newContent) {
+    updateNote.run(newContent, id);
 }
 function removeNote(id) {
     deleteNote.run(id);
+}
+// find max id of title
+function LastNoteID(title) {
+    const id = findLastNoteId.get(title)["MAX(id)"];
+    return id;
 }
 
 // function exports
@@ -78,6 +88,7 @@ export {
     initDb, releaseDB,
     createNote,
     listNotes, findNote,
-    updateContent,
-    removeNote
+    updateNoteContent,
+    removeNote,
+    LastNoteID
 };
