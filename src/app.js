@@ -2,22 +2,37 @@ import express from "express";
 import * as DbOps from "./database.js";
 
 const application = express();
-
 const PORT = 3000;
 
 DbOps.initDb();
+application.use(express.json());
 
+// get requests
 application.get("/", (req, res) => {
     const string = DbOps.listNotes();
+    res.status(200).send(string);
+});
+application.get("/:id", (req, res) => {
+    const id = req.params.id;
+    const string = DbOps.findNote(id);
+    res.status(200).send(string);
+});
 
-    res.status(200).send(string)
-    
-    DbOps.releaseDB();
+// post request
+application.post("/", (req, res) => {
+    console.log(req.body);
+    const { title, content } = req.body;
+
+    if (!title || !content)
+        return res.status(400).send("Title and content are required!");
+
+    const result = DbOps.createNote(title, content);
+    res.status(201).json({title, content});
 });
 
 application.listen(PORT);
 
-// exit cases
+// exit process
 process.on("exit", () => {
     DbOps.releaseDB();
     console.log("Process closed.");

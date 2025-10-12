@@ -10,18 +10,26 @@ const createNotesDB = database.prepare(`
         content TEXT
     )
 `);
+// create
 const insertNote = database.prepare(`
     INSERT INTO notes (title, content)
     VALUES (?, ?) 
 `);
+// read
 const selectNotes = database.prepare(`
     SELECT * FROM notes 
 `);
+const selectNoteById = database.prepare(`
+    SELECT * FROM notes
+    WHERE id = ?
+`);
+// update
 const updateNoteContent = database.prepare(`
     UPDATE notes
     SET content = ?
     WHERE id = ?
 `);
+// remove
 const deleteNote = database.prepare(`
     DELETE FROM notes
     WHERE id = ? 
@@ -39,7 +47,7 @@ function releaseDB() {
 function createNote(title, content) {
     insertNote.run(title, content);
 }
-// Turns all notes into a string representation
+// Returns a string representation of all notes
 function listNotes() {
     const notes = selectNotes.all();
     
@@ -48,6 +56,14 @@ function listNotes() {
             .map(([key, value]) => `${key}: ${value}`)
             .join("\n")
     ).join("\n\n");
+    return string;
+}
+// searches for a note by id
+function findNote(id) {
+    const note = selectNoteById.get(id);
+    const string = Object.entries(note)
+        .map(([key, value]) => `${key}: ${value}`)
+        .join('\n');
     return string;
 }
 function updateContent(id, newContent) {
@@ -61,7 +77,7 @@ function removeNote(id) {
 export {
     initDb, releaseDB,
     createNote,
-    listNotes,
+    listNotes, findNote,
     updateContent,
     removeNote
 };
