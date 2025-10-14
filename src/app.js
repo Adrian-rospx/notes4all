@@ -5,10 +5,20 @@ import router from "./router.js";
 
 const application = express();
 
-// logging middleware
 application.use(express.json());
 
-// router implementation for the notes app API
+// logging middleware
+application.use((req, res, next) => {
+    const date = new Date().toLocaleString();
+    const ip = req.headers['x-forwarded-for'];
+    
+    console.log(`From ip ${ip} ` + 
+                `on date ${date} recieved: ` +
+                `${req.method} ${req.url}`);
+    next();
+})
+
+// mount API router
 application.use("/", router);
 
 // error handler
