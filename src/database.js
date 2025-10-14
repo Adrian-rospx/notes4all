@@ -1,15 +1,17 @@
 import Database from "better-sqlite3";
 
-const database = new Database("notes.db")
+// Database initialisation
+const database = new Database("notes.db");
 
-// SQL statements for basic operations
-const createNotesDB = database.prepare(`
+database.prepare(`
     CREATE TABLE IF NOT EXISTS notes (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         content TEXT
     )
-`);
+`).run();
+
+// SQL statements for basic operations
 // create
 const insertNote = database.prepare(`
     INSERT INTO notes (title, content)
@@ -35,10 +37,7 @@ const deleteNote = database.prepare(`
     WHERE id = ? 
 `);
 
-// constructor destructor functions
-function initDB() {
-    createNotesDB.run();
-}
+// destructor function
 function releaseDB() {
     database.close();
 }
@@ -63,9 +62,9 @@ function removeNote(id) {
 
 // function exports
 export {
-    initDB, releaseDB,
     createNote,
     listNotes, findNote,
     updateNoteContent,
     removeNote,
+    releaseDB
 };

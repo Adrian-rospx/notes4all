@@ -1,81 +1,27 @@
 import express from "express";
-import * as DbOps from "./database.js";
+
+import { releaseDB } from "./database.js";
+import router from "./router.js";
 
 const application = express();
 
-DbOps.initDB();
+// logging middleware
 application.use(express.json());
 
-// get requests
-application.get("/", (req, res) => {
-    const notes = DbOps.listNotes();
-    
-    if (typeof notes === "undefined")
-        return res.status(404).send("Note not found");
+// router implementation for the notes app API
+application.use("/", router);
 
-    const string = notes.map((note) =>
-        Object.entries(note)
-            .map(([key, value]) => `${key}: ${value}`)
-            .join("\n")
-    ).join("\n\n");
-
-    res.status(200).send(string);
-});
-application.get("/:id", (req, res) => {
-    const id = req.params.id;
-    const note = DbOps.findNote(id);
-
-    if (typeof note === "undefined")
-        return res.status(404).send("Note not found.");
-        
-    const string = Object.entries(note)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join('\n');
-
-    res.status(200).send(string);
-});
-
-// post request
-application.post("/", (req, res) => {
-    const { title, content } = req.body;
-
-    if (!title || !content)
-        return res.status(400).send("Bad request. Title and content are required!");
-
-    const result = DbOps.createNote(title, content);
-    res.status(201).json({id: result.lastInsertRowid, title, content});
-});
-
-application.patch("/:id", (req, res) => {
-    const id = req.params.id;
-    const { content } = req.body;
-
-    if (!content)
-        return res.status(400).send("Bad request. Content is required!");
-
-    const result = DbOps.updateNoteContent(id, content);
-    if (result.changes === 0)
-        return res.status(404).send("Note not found.")
-
-    res.status(200).send("Resource updated successfully");
-});
-
-// delete request 
-application.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    const result = DbOps.removeNote(id);
-
-    if (result.changes === 0)
-        return res.status(404).send("Note not found");
-
-    res.status(200).send("Resource deleted");
-});
+// error handler
+application.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send("Server Error!");
+})
 
 export default application;
 
 // exit process
 process.on("exit", () => {
-    DbOps.releaseDB();
+    releaseDB();
     console.log("Process closed.");
 });
 process.on("SIGHUP", () => process.exit(128 + 1));
