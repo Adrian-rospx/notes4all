@@ -3,6 +3,7 @@ import Database from "better-sqlite3";
 // Database initialisation
 const database = new Database("notes.db");
 
+// schemas
 database.prepare(`
     CREATE TABLE IF NOT EXISTS notes (
         id INTEGER PRIMARY KEY,

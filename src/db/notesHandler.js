@@ -33,7 +33,6 @@ export function createNote(title, content) {
 export function getNotes() {
     return selectNotes.all();
 }
-// searches for a note by id
 export function getNote(id) {
     return selectNoteById.get(id);
 }

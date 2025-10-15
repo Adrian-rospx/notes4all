@@ -1,6 +1,6 @@
 import express from "express";
 
-import router from "./routes/notes.js";
+import noteRouter from "./routes/notes.js";
 
 const application = express();
 
@@ -15,16 +15,16 @@ application.use((req, res, next) => {
                 `on date ${date} recieved: ` +
                 `${req.method} ${req.url}`);
     next();
-})
+});
 
 // mount API router
-application.use("/api", router);
+application.use("/api", noteRouter);
 
 // error handler
 application.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send("Server Error!");
-})
+});
 
 export default application;
 
