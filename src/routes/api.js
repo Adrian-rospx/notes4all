@@ -1,10 +1,11 @@
-import * as DbOps from "./database.js";
 import { Router } from "express";
+
+import * as DbOps from "../database.js";
 const router = Router();
 
 // global middleware for all apps
 
-// CRUD routes fo notes
+// CRUD routes for notes
 
 // get requests
 router.get("/", (req, res) => {

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { releaseDB } from "./database.js";
-import router from "./router.js";
+import router from "./routes/api.js";
 
 const application = express();
 
@@ -19,7 +19,7 @@ application.use((req, res, next) => {
 })
 
 // mount API router
-application.use("/", router);
+application.use("/api", router);
 
 // error handler
 application.use((err, req, res, next) => {

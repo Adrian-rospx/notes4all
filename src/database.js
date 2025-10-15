@@ -7,15 +7,23 @@ database.prepare(`
     CREATE TABLE IF NOT EXISTS notes (
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
-        content TEXT
+        content TEXT,
+        date_created TEXT
+    )
+`).run();
+database.prepare(`
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT NOT NULL,
+        date_created TEXT
     )
 `).run();
 
 // SQL statements for basic operations
 // create
 const insertNote = database.prepare(`
-    INSERT INTO notes (title, content)
-    VALUES (?, ?) 
+    INSERT INTO notes (title, content, date_created)
+    VALUES (?, ?, datetime('now'))
 `);
 // read
 const selectNotes = database.prepare(`
