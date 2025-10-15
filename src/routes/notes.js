@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import * as DbOps from "../database.js";
+import * as notesDB from "../db/notes_handler.js";
 const router = Router();
 
 // global middleware for all apps
@@ -9,7 +9,7 @@ const router = Router();
 
 // get requests
 router.get("/", (req, res) => {
-    const notes = DbOps.listNotes();
+    const notes = notesDB.getNotes();
     
     if (typeof notes === "undefined")
         return res.status(404).send("Note not found");
@@ -24,7 +24,7 @@ router.get("/", (req, res) => {
 });
 router.get("/:id", (req, res) => {
     const id = req.params.id;
-    const note = DbOps.findNote(id);
+    const note = notesDB.getNote(id);
 
     if (typeof note === "undefined")
         return res.status(404).send("Note not found.");
@@ -43,7 +43,7 @@ router.post("/", (req, res) => {
     if (!title || !content)
         return res.status(400).send("Bad request. Title and content are required!");
 
-    const result = DbOps.createNote(title, content);
+    const result = notesDB.createNote(title, content);
     res.status(201).json({id: result.lastInsertRowid, title, content});
 });
 
@@ -54,7 +54,7 @@ router.patch("/:id", (req, res) => {
     if (!content)
         return res.status(400).send("Bad request. Content is required!");
 
-    const result = DbOps.updateNoteContent(id, content);
+    const result = notesDB.modifyNote(id, content);
     if (result.changes === 0)
         return res.status(404).send("Note not found.")
 
@@ -64,7 +64,7 @@ router.patch("/:id", (req, res) => {
 // delete request 
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
-    const result = DbOps.removeNote(id);
+    const result = notesDB.removeNote(id);
 
     if (result.changes === 0)
         return res.status(404).send("Note not found");

@@ -1,7 +1,6 @@
 import express from "express";
 
-import { releaseDB } from "./database.js";
-import router from "./routes/api.js";
+import router from "./routes/notes.js";
 
 const application = express();
 
@@ -31,7 +30,6 @@ export default application;
 
 // exit process
 process.on("exit", () => {
-    releaseDB();
     console.log("Process closed.");
 });
 process.on("SIGHUP", () => process.exit(128 + 1));
