@@ -6,7 +6,7 @@ const authRouter = Router();
 authRouter.post("/register", (req, res) => {
     const { username, password } = req.body;
     try {
-        const userData = authService.createUser(username, password);
+        const userData = authService.registerUser(username, password);
         res.status(201).json(userData);
     } catch (err) {
         if (err.message === "Error 409")
