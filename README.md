@@ -4,11 +4,11 @@ Note taking REST API made in NodeJS.
 
 ## Current features
 
-- `POST` / {JSON body (title, content)}
-- `GET` /
-- `GET` /:id
-- `PATCH` /:id {JSON body (content only)}
-- `DELETE` /:id
+- `POST` /api/ {JSON body (title, content)}
+- `GET` /api/
+- `GET` /api/:id
+- `PATCH` /api/:id {JSON body (content only)}
+- `DELETE` /api/:id
 
 JSON template:
 
@@ -18,3 +18,8 @@ JSON template:
     "content":"..."
 }
 ```
+
+Authentication via JWT:
+
+- `POST` /auth/register {JSON username, password}
+- `POST` /auth/login {JSON username, password}
