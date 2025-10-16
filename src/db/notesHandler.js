@@ -1,6 +1,6 @@
 import database from "./database.js";
 
-// SQL statements for basic operations
+// SQL statements for basic operations with notes
 // create
 const insertNote = database.prepare(`
     INSERT INTO notes (title, content, date_created)

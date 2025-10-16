@@ -16,6 +16,7 @@ database.prepare(`
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY,
         username TEXT NOT NULL,
+        password TEXT NOT NULL,
         date_created TEXT
     )
 `).run();

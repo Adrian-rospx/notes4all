@@ -1,6 +1,5 @@
 import { Router } from "express";
 
-import * as notesDB from "../db/notesHandler.js";
 import * as notesService from "../services/notesService.js"
 const noteRouter = Router();
 
@@ -75,7 +74,10 @@ noteRouter.delete("/:id", (req, res) => {
         notesService.removeNote(id);
         res.status(200).send("Resource deleted successfully");
     } catch (err) {
-        return res.status(404).send("Error: Note not found.");
+        if (err.message === "Error 404")
+            return res.status(404).send("Error: Note not found.");
+        else
+            throw err;
     }
 });
 
