@@ -1,6 +1,6 @@
 import { Router } from "express";
-
 import * as notesService from "../services/notesService.js"
+
 const noteRouter = Router();
 
 // global middleware for all apps

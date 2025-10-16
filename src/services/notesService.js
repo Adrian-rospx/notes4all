@@ -1,4 +1,3 @@
-
 import * as notesDB from "../db/notesHandler.js"
 
 export function getNotes() {
@@ -32,7 +31,7 @@ export function createNote(title, content) {
         throw new Error("Error 400");
     
     const result = notesDB.createNote(title, content);
-    return {id: result.lastInsertRowid, title, content};
+    return notesDB.getNotePublic(result.lastInsertRowid);
 }
 
 export function modifyNote(id, content) {

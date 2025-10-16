@@ -8,10 +8,15 @@ const insertNote = database.prepare(`
 `);
 // read
 const selectNotes = database.prepare(`
-    SELECT * FROM notes 
-`);
-const selectNoteById = database.prepare(`
     SELECT * FROM notes
+`);
+const selectNote = database.prepare(`
+    SELECT * FROM notes
+    WHERE id = ?
+`);
+const selectNotePublic = database.prepare(`
+    SELECT id, title, content, date_created
+    FROM notes
     WHERE id = ?
 `);
 // update
@@ -34,7 +39,10 @@ export function getNotes() {
     return selectNotes.all();
 }
 export function getNote(id) {
-    return selectNoteById.get(id);
+    return selectNote.get(id);
+}
+export function getNotePublic(id) {
+    return selectNotePublic.get(id);
 }
 export function modifyNote(id, newContent) {
     return updateNote.run(newContent, id);

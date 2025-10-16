@@ -1,4 +1,4 @@
-import database from "./database";
+import database from "./database.js";
 
 // SQL statements for user database interactions
 const insertUser = database.prepare(`
@@ -9,10 +9,15 @@ const selectUserByID = database.prepare(`
     SELECT * FROM users
     WHERE id = ?
 `);
-const selectUserByName = database.prepare(`
+const selectUser = database.prepare(`
     SELECT * FROM users
     WHERE username = ?
 `); 
+const selectUserPublic = database.prepare(`
+    SELECT id, username, date_created
+    FROM users
+    WHERE username = ?
+`);
 const removeUser = database.prepare(`
     DELETE FROM users
     WHERE id = ?
@@ -25,8 +30,11 @@ export function createUser(username, password) {
 export function getUserByID(id) {
     return selectUserByID.get(id);
 }
-export function getUserByName(username) {
-    return selectUserByName.get(username);
+export function getUser(username) {
+    return selectUser.get(username);
+}
+export function getUserPublic(username) {
+    return selectUserPublic.get(username);
 }
 export function deleteUser(id) {
     return removeUser.run(id);

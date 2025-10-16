@@ -1,6 +1,7 @@
 import express from "express";
 
 import noteRouter from "./routes/notes.js";
+import authRouter from "./routes/auth.js";
 
 const application = express();
 
@@ -17,6 +18,8 @@ application.use((req, res, next) => {
     next();
 });
 
+// mount auth router
+application.use("/auth", authRouter);
 // mount API router
 application.use("/api", noteRouter);
 
