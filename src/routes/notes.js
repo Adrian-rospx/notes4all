@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as notesService from "../services/notesService.js"
+import * as notesService from "../services/notesService.js";
 
 const noteRouter = Router();
 

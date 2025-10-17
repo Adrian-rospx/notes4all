@@ -2,6 +2,7 @@ import express from "express";
 
 import noteRouter from "./routes/notes.js";
 import authRouter from "./routes/auth.js";
+import { requireAuth } from "./middleware/auth.js";
 
 const application = express();
 
@@ -21,7 +22,7 @@ application.use((req, res, next) => {
 // mount auth router
 application.use("/auth", authRouter);
 // mount API router
-application.use("/api", noteRouter);
+application.use("/api", requireAuth, noteRouter);
 
 // error handler
 application.use((err, req, res, next) => {
