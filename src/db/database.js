@@ -9,7 +9,9 @@ database.prepare(`
         id INTEGER PRIMARY KEY,
         title TEXT NOT NULL,
         content TEXT,
-        date_created TEXT
+        date_created TEXT,
+        user_id INTEGER,
+        FOREIGN KEY (user_id) REFERENCES users(id)
     )
 `).run();
 database.prepare(`

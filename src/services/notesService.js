@@ -26,11 +26,11 @@ export function getNote(id) {
     return string;
 }
 
-export function createNote(title, content) {
+export function createNote(title, content, userId) {
     if (!title || !content)
         throw new Error("Error 400");
     
-    const result = notesDB.createNote(title, content);
+    const result = notesDB.createNote(title, content, userId);
     return notesDB.getNotePublic(result.lastInsertRowid);
 }
 

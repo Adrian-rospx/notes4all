@@ -36,8 +36,9 @@ noteRouter.get("/:id", (req, res) => {
 // post request
 noteRouter.post("/", (req, res) => {
     const { title, content } = req.body;
+    const userId = req.user.userId;
     try {
-        const newData = notesService.createNote(title, content);
+        const newData = notesService.createNote(title, content, userId);
         res.status(201).json(newData);
     } catch (err) {
         if (err.message === "Error 400")

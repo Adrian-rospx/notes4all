@@ -3,8 +3,8 @@ import database from "./database.js";
 // SQL statements for basic operations with notes
 // create
 const insertNote = database.prepare(`
-    INSERT INTO notes (title, content, date_created)
-    VALUES (?, ?, datetime('now'))
+    INSERT INTO notes (title, content, date_created, user_id)
+    VALUES (?, ?, datetime('now'), ?)
 `);
 // read
 const selectNotes = database.prepare(`
@@ -32,8 +32,8 @@ const deleteNote = database.prepare(`
 `);
 
 // CRUD operation wrapper functions
-export function createNote(title, content) {
-    return insertNote.run(title, content);
+export function createNote(title, content, user_id) {
+    return insertNote.run(title, content, user_id);
 }
 export function getNotes() {
     return selectNotes.all();
