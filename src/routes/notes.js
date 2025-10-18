@@ -9,8 +9,9 @@ const noteRouter = Router();
 
 // get requests
 noteRouter.get("/", (req, res) => {
+    const userId = req.user.userId;
     try {
-        const string = notesService.getNotes();
+        const string = notesService.getNotes(userId);
         res.status(200).send(string);
     } catch (err) {
         if (err.message === "Error 404")
@@ -20,12 +21,12 @@ noteRouter.get("/", (req, res) => {
     }
 });
 noteRouter.get("/:id", (req, res) => {
-    const id = req.params.id;
+    const noteId = req.params.id;
+    const userId = req.user.userId;
     try {
-        const string = notesService.getNote(id);
+        const string = notesService.getNote(noteId, userId);
         res.status(200).send(string);
-    }
-    catch (err) {
+    } catch (err) {
         if (err.message === "Error 404")
             return res.status(404).send("Error: Note not found.");
         else 
@@ -51,11 +52,12 @@ noteRouter.post("/", (req, res) => {
 
 // patch request
 noteRouter.patch("/:id", (req, res) => {
-    const id = req.params.id;
+    const noteId = req.params.id;
     const { content } = req.body;
+    const userId = req.user.userId;
 
     try {
-        notesService.modifyNote(id, content);
+        notesService.modifyNote(noteId, content, userId);
         res.status(200).send("Resource updated successfully");
     } catch (err) {
         if (err.message === "Error 400")
@@ -70,9 +72,10 @@ noteRouter.patch("/:id", (req, res) => {
 
 // delete request 
 noteRouter.delete("/:id", (req, res) => {
-    const id = req.params.id;
+    const noteId = req.params.id;
+    const userId = req.user.userId;
     try {
-        notesService.removeNote(id);
+        notesService.removeNote(noteId, userId);
         res.status(200).send("Resource deleted successfully");
     } catch (err) {
         if (err.message === "Error 404")

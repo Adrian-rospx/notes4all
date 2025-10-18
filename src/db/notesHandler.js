@@ -8,45 +8,40 @@ const insertNote = database.prepare(`
 `);
 // read
 const selectNotes = database.prepare(`
-    SELECT * FROM notes
-`);
-const selectNote = database.prepare(`
-    SELECT * FROM notes
-    WHERE id = ?
-`);
-const selectNotePublic = database.prepare(`
     SELECT id, title, content, date_created
     FROM notes
-    WHERE id = ?
+    WHERE user_id = ?
+`);
+const selectNote = database.prepare(`
+    SELECT id, title, content, date_created
+    FROM notes
+    WHERE id = ? AND user_id = ?
 `);
 // update
 const updateNote = database.prepare(`
     UPDATE notes
     SET content = ?
-    WHERE id = ?
+    WHERE id = ? AND user_id = ?
 `);
 // remove
 const deleteNote = database.prepare(`
     DELETE FROM notes
-    WHERE id = ? 
+    WHERE id = ? AND user_id = ?
 `);
 
 // CRUD operation wrapper functions
-export function createNote(title, content, user_id) {
-    return insertNote.run(title, content, user_id);
+export function createNote(title, content, userId) {
+    return insertNote.run(title, content, userId);
 }
-export function getNotes() {
-    return selectNotes.all();
+export function getNotes(userId) {
+    return selectNotes.all(userId)
 }
-export function getNote(id) {
-    return selectNote.get(id);
+export function getNote(noteId, userId) {
+    return selectNote.get(noteId, userId);
 }
-export function getNotePublic(id) {
-    return selectNotePublic.get(id);
+export function modifyNote(noteId, newContent, userId) {
+    return updateNote.run(newContent, noteId, userId);
 }
-export function modifyNote(id, newContent) {
-    return updateNote.run(newContent, id);
-}
-export function removeNote(id) {
-    return deleteNote.run(id);
+export function removeNote(noteId, userId) {
+    return deleteNote.run(noteId, userId);
 }
