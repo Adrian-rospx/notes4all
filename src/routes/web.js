@@ -3,6 +3,6 @@ import express from "express";
 
 const webRouter = Router();
 
-webRouter.use(express.static("src/public"));
+webRouter.use(express.static("public"));
 
 export default webRouter;

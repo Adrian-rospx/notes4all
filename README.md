@@ -2,6 +2,7 @@
 
 Note taking REST API made in NodeJS.
 It uses JSON Web Token authentication.
+Documentation is in the public index.html file
 
 ## Current features
 
