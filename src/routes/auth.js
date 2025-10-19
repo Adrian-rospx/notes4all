@@ -1,9 +1,10 @@
 import { Router } from "express";
 import * as authService from "../services/authService.js";
+import * as vld from "../middleware/validateInput.js";
 
 const authRouter = Router();
 
-authRouter.post("/register", (req, res) => {
+authRouter.post("/register", vld.validateUserData, (req, res) => {
     const { username, password } = req.body;
     try {
         const userData = authService.registerUser(username, password);
@@ -16,7 +17,7 @@ authRouter.post("/register", (req, res) => {
     }
 });
 
-authRouter.post("/login", (req, res) => {
+authRouter.post("/login", vld.validateUserData, (req, res) => {
     const { username, password } = req.body;
     try {
         const token = authService.loginUser(username, password);

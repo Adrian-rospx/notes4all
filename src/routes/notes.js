@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as notesService from "../services/notesService.js";
+import * as vld from "../middleware/validateInput.js";
 
 const noteRouter = Router();
 
@@ -33,7 +34,7 @@ noteRouter.get("/:id", (req, res) => {
 });
 
 // post request
-noteRouter.post("/", (req, res) => {
+noteRouter.post("/", vld.validateNoteData, (req, res) => {
     const { title, content } = req.body;
     const userId = req.user.userId;
     try {
@@ -49,7 +50,7 @@ noteRouter.post("/", (req, res) => {
 });
 
 // patch request
-noteRouter.patch("/:id", (req, res) => {
+noteRouter.patch("/:id", vld.validateNoteData, (req, res) => {
     const noteId = req.params.id;
     const { content } = req.body;
     const userId = req.user.userId;
