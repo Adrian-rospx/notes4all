@@ -14,11 +14,11 @@ export function registerUser(username, password) {
         else
             throw err;
     }
-    return usersDB.getUserPublic(username);
+    return usersDB.getUser(username);
 }
 
 export function loginUser(username, password) {
-    const user = usersDB.getUser(username);
+    const user = usersDB.getUserPrivate(username);
     
     if (!username || !bcrypt.compareSync(password, user.password))
         throw new Error("Error 401");
@@ -29,13 +29,4 @@ export function loginUser(username, password) {
         { expiresIn: "1h"}
     );
     return token;
-}
-
-export function getUser(username) {
-    const user = usersDB.getUserPublic(username);
-
-    if (typeof user === "undefined")
-        throw new Error("Error 404");
-
-    return user;
 }

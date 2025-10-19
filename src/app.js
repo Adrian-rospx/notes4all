@@ -21,6 +21,7 @@ application.use((req, res, next) => {
 
 // mount auth router
 application.use("/auth", authRouter);
+
 // mount API router
 application.use("/api", requireAuth, noteRouter);
 

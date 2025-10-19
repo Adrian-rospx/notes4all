@@ -11,6 +11,7 @@ const selectNotes = database.prepare(`
     SELECT id, title, content, date_created
     FROM notes
     WHERE user_id = ?
+    ORDER BY date_created DESC;
 `);
 const selectNote = database.prepare(`
     SELECT id, title, content, date_created
