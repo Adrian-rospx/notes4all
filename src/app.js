@@ -1,7 +1,8 @@
 import express from "express";
 
-import noteRouter from "./routes/notes.js";
+import webRouter from "./routes/web.js";
 import authRouter from "./routes/auth.js";
+import noteRouter from "./routes/notes.js";
 import { requireAuth } from "./middleware/auth.js";
 
 const application = express();
@@ -18,6 +19,9 @@ application.use((req, res, next) => {
                 `${req.method} ${req.url}`);
     next();
 });
+
+// web page
+application.use("/", webRouter);
 
 // mount auth router
 application.use("/auth", authRouter);

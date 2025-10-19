@@ -3,8 +3,6 @@ import * as notesService from "../services/notesService.js";
 
 const noteRouter = Router();
 
-// global middleware for all apps
-
 // CRUD routes for notes
 
 // get requests
