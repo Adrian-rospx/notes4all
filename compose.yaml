@@ -1,0 +1,11 @@
+name: notes4all
+services:
+  notes4all:
+    build:
+      context: .
+    env_file:
+      - ./.env
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./notes.db:/usr/src/app/notes.db
